@@ -4,7 +4,10 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import java.io.IOException;
@@ -19,22 +22,40 @@ public class MainActivity extends AppCompatActivity {
     public static final String LOG_TAG= MainActivity.class.getName();
 
     private static final String JSON_URL =
-            "https://www.googleapis.com/books/v1/volumes?q=android&maxResults=40";
+            "https://www.googleapis.com/books/v1/volumes?maxResults=40&q=";
+
+    private ListView listBooks;
+    private EditText editText;
+    private Button search;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ListView listBooks=(ListView)findViewById(R.id.ListView);
+        listBooks=(ListView)findViewById(R.id.ListView);
+        editText=(EditText) findViewById(R.id.Edit);
+        search=(Button)findViewById(R.id.Search);
 
         adapter=new BooksAdapter(getBaseContext(),R.layout.activity_main,new ArrayList<BookItems>());
 
         listBooks.setAdapter(adapter);
 
         //Missing new AsyncTask
-        new BookItemsAsyncTask().execute(JSON_URL);
+
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String query=editText.getText().toString();
+
+                new BookItemsAsyncTask().execute(JSON_URL+query);
+
+            }
+        });
     }
+
+
     private class BookItemsAsyncTask extends AsyncTask<String,Void,List<BookItems>> {
 
         @Override

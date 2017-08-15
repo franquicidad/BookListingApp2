@@ -41,4 +41,8 @@ public class BookItems {
     public void setDate(String date) {
         this.date = date;
     }
+
+    public String getLink() {
+        return link;
+    }
 }

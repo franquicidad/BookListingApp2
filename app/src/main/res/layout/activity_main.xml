@@ -11,11 +11,13 @@
        android:layout_width="match_parent"
        android:layout_height="wrap_content">
        <EditText
+           android:id="@+id/Edit"
            android:layout_width="0dp"
            android:layout_height="match_parent"
            android:layout_weight="2"
            android:hint="Search here for your book"/>
        <Button
+           android:id="@+id/Search"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:text="Search"/>
