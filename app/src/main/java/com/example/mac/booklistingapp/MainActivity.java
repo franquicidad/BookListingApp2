@@ -43,12 +43,11 @@ public class MainActivity extends AppCompatActivity {
         listBooks.setAdapter(adapter);
 
         //Missing new AsyncTask
-
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String query=editText.getText().toString();
-
+                //Missing new AsyncTask
                 new BookItemsAsyncTask().execute(JSON_URL+query);
 
             }
