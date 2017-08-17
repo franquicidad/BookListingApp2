@@ -1,6 +1,10 @@
 package com.example.mac.booklistingapp;
 
+import android.content.Context;
 import android.os.AsyncTask;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,7 +19,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<BookItems>{
 
     private BooksAdapter adapter;
 
@@ -27,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     private ListView listBooks;
     private EditText editText;
     private Button search;
+
+    private String mUrl;
 
 
     @Override
@@ -54,12 +60,52 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public Loader<List<BookItems>> onCreateLoader(int id, Bundle args) {
+        return null;
+    }
 
-    private class BookItemsAsyncTask extends AsyncTask<String,Void,List<BookItems>> {
+    @Override
+    public void onLoadFinished(Loader<List<BookItems>> loader, List<BookItems> data) {
+        adapter.clear();
+        adapter.addAll(data);
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<BookItems>> loader) {
+
+    }
+
+
+    private class BookItemsLoader extends AsyncTaskLoader<List<BookItems>> {
+
+        public BookItemsLoader(Context context,String url) {
+            super(context);
+            mUrl=url;
+        }
+
+//        @Override
+//        protected List<BookItems> doInBackground(String... urls) {
+//            //Create the Url object
+//            URL url=QueryUtils.createUrl(urls[0]);
+//            try{
+//                String jsonResponse=QueryUtils.makeHttpRequest(url);
+//                ArrayList<BookItems> books=QueryUtils.extractBookItems(jsonResponse);
+//                return books;
+//            } catch (IOException e) {
+//                Log.e(LOG_TAG, "No answer",e);
+//            }
+//            return null;
+//        }
+
+//        @Override
+//        protected void onPostExecute(List<BookItems> data) {
+//
+//        }
 
         @Override
-        protected List<BookItems> doInBackground(String... urls) {
-            //Create the Url object
+        public List<BookItems> loadInBackground() {
             URL url=QueryUtils.createUrl(urls[0]);
             try{
                 String jsonResponse=QueryUtils.makeHttpRequest(url);
@@ -72,10 +118,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(List<BookItems> data) {
-            adapter.clear();
-            adapter.addAll(data);
-            adapter.notifyDataSetChanged();
+        protected void onStartLoading() {
+            forceLoad();
         }
     }
 }

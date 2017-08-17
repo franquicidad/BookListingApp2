@@ -58,7 +58,7 @@ public class BooksAdapter extends ArrayAdapter<BookItems> {
         date = (TextView) v.findViewById(R.id.published_date);
         date.setText(bookItemPosition.getDate());
 
-        new DownloadImagesTask(bookImage).execute(bookItemPosition.getLink());
+//        new DownloadImagesTask(bookImage).execute(bookItemPosition.getLink());
 
 
         return v;
@@ -101,4 +101,3 @@ public class BooksAdapter extends ArrayAdapter<BookItems> {
         }
     }
 }
-
