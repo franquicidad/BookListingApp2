@@ -19,7 +19,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<BookItems>{
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<BookItems>> {
 
     private BooksAdapter adapter;
 
@@ -27,6 +27,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private static final String JSON_URL =
             "https://www.googleapis.com/books/v1/volumes?maxResults=40&q=";
+
+    /**
+     * Constant value for the earthquake loader ID. We can choose any integer.
+     * This really only comes into play if you're using multiple loaders.
+     */
+    private static final int EARTHQUAKE_LOADER_ID = 1;
 
     private ListView listBooks;
     private EditText editText;
@@ -49,20 +55,22 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         listBooks.setAdapter(adapter);
 
         //Missing new AsyncTask
+
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String query=editText.getText().toString();
                 //Missing new AsyncTask
-                new BookItemsAsyncTask().execute(JSON_URL+query);
-
+                LoaderManager loaderManager=getSupportLoaderManager();
+                loaderManager.initLoader(EARTHQUAKE_LOADER_ID,null,this);
             }
         });
     }
 
     @Override
-    public Loader<List<BookItems>> onCreateLoader(int id, Bundle args) {
-        return null;
+    public Loader<List<BookItems>> onCreateLoader(int i, Bundle bundle) {
+        String query=editText.getText().toString();
+
+        return new BookItemsAsyncTaskLoader(this,JSON_URL+query);
     }
 
     @Override
@@ -74,15 +82,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoaderReset(Loader<List<BookItems>> loader) {
+        adapter.clear();
 
     }
 
 
-    private class BookItemsLoader extends AsyncTaskLoader<List<BookItems>> {
+    private class BookItemsAsyncTaskLoader extends AsyncTaskLoader<List<BookItems>> {
 
-        public BookItemsLoader(Context context,String url) {
+        public BookItemsAsyncTaskLoader(Context context,String url) {
             super(context);
-            mUrl=url;
         }
 
 //        @Override
@@ -101,20 +109,19 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
 //        @Override
 //        protected void onPostExecute(List<BookItems> data) {
-//
+//            adapter.clear();
+//            adapter.addAll(data);
+//            adapter.notifyDataSetChanged();
 //        }
 
         @Override
         public List<BookItems> loadInBackground() {
-            URL url=QueryUtils.createUrl(urls[0]);
-            try{
-                String jsonResponse=QueryUtils.makeHttpRequest(url);
-                ArrayList<BookItems> books=QueryUtils.extractBookItems(jsonResponse);
-                return books;
-            } catch (IOException e) {
-                Log.e(LOG_TAG, "No answer",e);
+            if (mUrl == null) {
+                return null;
             }
-            return null;
+            // Perform the network request, parse the response, and extract a list of earthquakes.
+            List<BookItems> bookItems= QueryUtils.extractBookItems(mUrl);
+            return bookItems;
         }
 
         @Override
