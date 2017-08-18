@@ -62,10 +62,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             public void onClick(View view) {
                 //Missing new AsyncTask
                 LoaderManager loaderManager=getSupportLoaderManager();
-                loaderManager.initLoader(EARTHQUAKE_LOADER_ID,null,this);
+                loaderManager.initLoader(EARTHQUAKE_LOADER_ID,null,MainActivity.this);
             }
         });
-    }·
+    }
 
     @Override
     public Loader<List<BookItems>> onCreateLoader(int i, Bundle bundle) {
