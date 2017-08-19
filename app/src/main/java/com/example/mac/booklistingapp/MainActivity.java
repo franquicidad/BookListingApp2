@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private EditText editText;
     private Button search;
 
-    private String mUrl;
 
 
     @Override
@@ -88,7 +87,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
 
-    private class BookItemsAsyncTaskLoader extends AsyncTaskLoader<List<BookItems>> {
+    private static class BookItemsAsyncTaskLoader extends AsyncTaskLoader<List<BookItems>> {
+
+        private String mUrl;
+
 
         public BookItemsAsyncTaskLoader(Context context,String url) {
             super(context);
