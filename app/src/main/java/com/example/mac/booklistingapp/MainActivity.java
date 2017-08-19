@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,15 +90,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
 
-    private static class BookItemsAsyncTaskLoader extends AsyncTaskLoader<List<BookItems>> {
+    private class BookItemsAsyncTaskLoader extends AsyncTaskLoader<List<BookItems>> {
 
         private String mUrl;
 
-
         public BookItemsAsyncTaskLoader(Context context,String url) {
             super(context);
+            this.mUrl=url;
         }
-
 //        @Override
 //        protected List<BookItems> doInBackground(String... urls) {
 //            //Create the Url object
@@ -124,8 +124,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             if (mUrl == null) {
                 return null;
             }
+            List<BookItems> bookItems=null;
             // Perform the network request, parse the response, and extract a list of earthquakes.
-            List<BookItems> bookItems= QueryUtils.extractBookItems(mUrl);
+            bookItems=QueryUtils.fetchBookList(mUrl);
             return bookItems;
         }
 

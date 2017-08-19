@@ -15,6 +15,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.example.mac.booklistingapp.MainActivity.LOG_TAG;
 
@@ -106,6 +107,9 @@ public class QueryUtils {
     }
 
     public static ArrayList<BookItems> extractBookItems(String jsonResponse){
+        String title="";
+        String description ="";
+
 
         // Create an empty ArrayList that we can start adding earthquakes to
         ArrayList<BookItems> books=new ArrayList<>();
@@ -122,8 +126,12 @@ public class QueryUtils {
 
                 JSONObject currentBook=bookArray.getJSONObject(i);
                 JSONObject volumeInfo = currentBook.getJSONObject("volumeInfo");
-                String title=volumeInfo.getString("title");
-                String description=volumeInfo.getString("description");
+                if(volumeInfo.has("title")){
+                    title=volumeInfo.getString("title");
+                }
+                if(volumeInfo.has("description")){
+                    description = volumeInfo.getString("description");
+                }
                 String date=volumeInfo.getString("publishedDate");
 
                 JSONObject imageLink =volumeInfo.getJSONObject("imageLinks");
@@ -141,5 +149,15 @@ public class QueryUtils {
             Log.e("QueryUtils", "Problem parsing the earthquake JSON results", e);
         }
         return books;
+    }
+    public static List<BookItems> fetchBookList(String urlString)  {
+        URL url = createUrl(urlString);
+        String jsonResponse = null;
+        try {
+            jsonResponse = makeHttpRequest(url);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return extractBookItems(jsonResponse);
     }
 }
