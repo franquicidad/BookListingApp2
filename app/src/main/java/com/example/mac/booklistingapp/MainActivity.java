@@ -76,7 +76,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoadFinished(Loader<List<BookItems>> loader, List<BookItems> data) {
         adapter.clear();
-        adapter.addAll(data);
+        if(data != null){
+            adapter.addAll(data);
+        }
         adapter.notifyDataSetChanged();
     }
 
