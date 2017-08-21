@@ -135,7 +135,7 @@ public class QueryUtils {
                 if(volumeInfo.has("publishedDate"))
                  date=volumeInfo.getString("publishedDate");
 
-                if(volumeInfo.has("imagelinks")) {
+                if(volumeInfo.has("imageLinks")) {
                     JSONObject imageLink = volumeInfo.getJSONObject("imageLinks");
                     link = imageLink.getString("thumbnail");
                 }

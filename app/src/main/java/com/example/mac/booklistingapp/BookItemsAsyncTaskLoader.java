@@ -17,6 +17,22 @@ public class BookItemsAsyncTaskLoader extends AsyncTaskLoader<List<BookItems>> {
         super(context);
         this.mUrl=url;
     }
+    @Override
+    public List<BookItems> loadInBackground() {
+        if (mUrl == null) {
+            return null;
+        }
+        List<BookItems> bookItems=null;
+        // Perform the network request, parse the response, and extract a list of earthquakes.
+        bookItems=QueryUtils.fetchBookList(mUrl);
+        return bookItems;
+    }
+
+    @Override
+    protected void onStartLoading() {
+        forceLoad();
+    }
+}
 //        @Override
 //        protected List<BookItems> doInBackground(String... urls) {
 //            //Create the Url object
@@ -37,20 +53,3 @@ public class BookItemsAsyncTaskLoader extends AsyncTaskLoader<List<BookItems>> {
 //            adapter.addAll(data);
 //            adapter.notifyDataSetChanged();
 //        }
-
-    @Override
-    public List<BookItems> loadInBackground() {
-        if (mUrl == null) {
-            return null;
-        }
-        List<BookItems> bookItems=null;
-        // Perform the network request, parse the response, and extract a list of earthquakes.
-        bookItems=QueryUtils.fetchBookList(mUrl);
-        return bookItems;
-    }
-
-    @Override
-    protected void onStartLoading() {
-        forceLoad();
-    }
-}

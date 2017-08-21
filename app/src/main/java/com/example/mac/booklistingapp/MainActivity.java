@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.io.IOException;
 import java.net.URL;
@@ -39,6 +40,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private EditText editText;
     private Button search;
 
+    private TextView mEmptyStateTextView;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +52,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         listBooks = (ListView) findViewById(R.id.ListView);
         editText = (EditText) findViewById(R.id.Edit);
         search = (Button) findViewById(R.id.Search);
+
+        mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
+        listBooks.setEmptyView(mEmptyStateTextView);
+
 
         adapter = new BooksAdapter(getBaseContext(), new ArrayList<BookItems>());
 
