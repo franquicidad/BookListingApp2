@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private BooksAdapter adapter;
 
-    public static final String LOG_TAG= MainActivity.class.getName();
+    public static final String LOG_TAG = MainActivity.class.getName();
 
     private static final String JSON_URL =
             "https://www.googleapis.com/books/v1/volumes?maxResults=40&q=";
@@ -40,18 +40,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private Button search;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        listBooks=(ListView)findViewById(R.id.ListView);
-        editText=(EditText) findViewById(R.id.Edit);
-        search=(Button)findViewById(R.id.Search);
+        listBooks = (ListView) findViewById(R.id.ListView);
+        editText = (EditText) findViewById(R.id.Edit);
+        search = (Button) findViewById(R.id.Search);
 
-        adapter=new BooksAdapter(getBaseContext(),new ArrayList<BookItems>());
+        adapter = new BooksAdapter(getBaseContext(), new ArrayList<BookItems>());
 
         listBooks.setAdapter(adapter);
 
@@ -61,23 +59,23 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             @Override
             public void onClick(View view) {
                 //Missing new AsyncTask
-                LoaderManager loaderManager=getSupportLoaderManager();
-                loaderManager.initLoader(EARTHQUAKE_LOADER_ID,null,MainActivity.this);
+                LoaderManager loaderManager = getSupportLoaderManager();
+                loaderManager.initLoader(EARTHQUAKE_LOADER_ID, null, MainActivity.this);
             }
         });
     }
 
     @Override
     public Loader<List<BookItems>> onCreateLoader(int i, Bundle bundle) {
-        String query=editText.getText().toString();
+        String query = editText.getText().toString();
 
-        return new BookItemsAsyncTaskLoader(this,JSON_URL+query);
+        return new BookItemsAsyncTaskLoader(this, JSON_URL + query);
     }
 
     @Override
     public void onLoadFinished(Loader<List<BookItems>> loader, List<BookItems> data) {
         adapter.clear();
-        if(data != null){
+        if (data != null) {
             adapter.addAll(data);
         }
         adapter.notifyDataSetChanged();
@@ -88,54 +86,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         adapter.clear();
 
     }
-
-
-    private class BookItemsAsyncTaskLoader extends AsyncTaskLoader<List<BookItems>> {
-
-        private String mUrl;
-
-        public BookItemsAsyncTaskLoader(Context context,String url) {
-            super(context);
-            this.mUrl=url;
-        }
-//        @Override
-//        protected List<BookItems> doInBackground(String... urls) {
-//            //Create the Url object
-//            URL url=QueryUtils.createUrl(urls[0]);
-//            try{
-//                String jsonResponse=QueryUtils.makeHttpRequest(url);
-//                ArrayList<BookItems> books=QueryUtils.extractBookItems(jsonResponse);
-//                return books;
-//            } catch (IOException e) {
-//                Log.e(LOG_TAG, "No answer",e);
-//            }
-//            return null;
-//        }
-
-//        @Override
-//        protected void onPostExecute(List<BookItems> data) {
-//            adapter.clear();
-//            adapter.addAll(data);
-//            adapter.notifyDataSetChanged();
-//        }
-
-        @Override
-        public List<BookItems> loadInBackground() {
-            if (mUrl == null) {
-                return null;
-            }
-            List<BookItems> bookItems=null;
-            // Perform the network request, parse the response, and extract a list of earthquakes.
-            bookItems=QueryUtils.fetchBookList(mUrl);
-            return bookItems;
-        }
-
-        @Override
-        protected void onStartLoading() {
-            forceLoad();
-        }
-    }
 }
+
+
 
 
 
