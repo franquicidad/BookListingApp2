@@ -1,6 +1,8 @@
 package com.example.mac.booklistingapp;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.app.LoaderManager;
@@ -42,6 +44,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private TextView mEmptyStateTextView;
 
+    private NetworkInfo networkInfo;
+
+    private ConnectivityManager cm;
+
 
 
     @Override
@@ -59,16 +65,33 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         adapter = new BooksAdapter(getBaseContext(), new ArrayList<BookItems>());
 
+        //Get details on the currently active default data network
+        networkInfo = cm.getActiveNetworkInfo();
+
+        // If there is a network connection, fetch data
+        if (networkInfo != null && networkInfo.isConnected()) {
+            LoaderManager loaderManager = getSupportLoaderManager();
+            loaderManager.initLoader(EARTHQUAKE_LOADER_ID, null, MainActivity.this);
+        } else {
+            mEmptyStateTextView.setText(R.string.no_internet);
+        }
+
+        LoaderManager loaderManager = getSupportLoaderManager();
+        loaderManager.initLoader(EARTHQUAKE_LOADER_ID, null, MainActivity.this);
+
         listBooks.setAdapter(adapter);
+
+
 
         //Missing new AsyncTask
 
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 //Missing new AsyncTask
                 LoaderManager loaderManager = getSupportLoaderManager();
-                loaderManager.initLoader(EARTHQUAKE_LOADER_ID, null, MainActivity.this);
+                loaderManager.restartLoader(EARTHQUAKE_LOADER_ID, null, MainActivity.this);
             }
         });
     }

@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">BookListingApp</string>
     <string name="nothing_found_text">No books to display,\nplease modify your search</string>
+    <string name="no_internet">No internet Connection</string>
 </resources>
