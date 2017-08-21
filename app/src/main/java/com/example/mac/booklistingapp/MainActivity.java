@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         editText=(EditText) findViewById(R.id.Edit);
         search=(Button)findViewById(R.id.Search);
 
-        adapter=new BooksAdapter(getBaseContext(),R.layout.activity_main,new ArrayList<BookItems>());
+        adapter=new BooksAdapter(getBaseContext(),new ArrayList<BookItems>());
 
         listBooks.setAdapter(adapter);
 
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
 
-    private class BookItemsAsyncTaskLoader extends AsyncTaskLoader<List<BookItems>> {
+    private static  class BookItemsAsyncTaskLoader extends AsyncTaskLoader<List<BookItems>> {
 
         private String mUrl;
 

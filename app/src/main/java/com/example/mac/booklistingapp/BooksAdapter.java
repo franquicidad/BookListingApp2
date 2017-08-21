@@ -35,8 +35,8 @@ public class BooksAdapter extends ArrayAdapter<BookItems> {
     private TextView description;
     private TextView date;
 
-    public BooksAdapter(Context context, int resource, List<BookItems> objects) {
-        super(context, resource, objects);
+    public BooksAdapter(Context context, List<BookItems> objects) {
+        super(context,0, objects);
     }
 
 
@@ -59,6 +59,8 @@ public class BooksAdapter extends ArrayAdapter<BookItems> {
 
         date = (TextView) v.findViewById(R.id.published_date);
         date.setText("Release Date:"+bookItemPosition.getDate());
+
+
 
         Picasso.with(getContext()).load(bookItemPosition.getLink()).into(bookImage);
 

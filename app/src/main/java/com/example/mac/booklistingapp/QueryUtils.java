@@ -120,8 +120,6 @@ public class QueryUtils {
             JSONObject baseJsonResponce = new JSONObject(jsonResponse);
             JSONArray bookArray = baseJsonResponce.getJSONArray("items");
 
-
-
             for(int i=0;i<bookArray.length();i++){
 
                 JSONObject currentBook=bookArray.getJSONObject(i);
