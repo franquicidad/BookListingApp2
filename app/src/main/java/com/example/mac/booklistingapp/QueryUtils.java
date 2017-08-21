@@ -109,6 +109,8 @@ public class QueryUtils {
     public static ArrayList<BookItems> extractBookItems(String jsonResponse){
         String title="";
         String description ="";
+        String date="";
+        String link="";
 
 
         // Create an empty ArrayList that we can start adding earthquakes to
@@ -130,10 +132,13 @@ public class QueryUtils {
                 if(volumeInfo.has("description")){
                     description = volumeInfo.getString("description");
                 }
-                String date=volumeInfo.getString("publishedDate");
+                if(volumeInfo.has("publishedDate"))
+                 date=volumeInfo.getString("publishedDate");
 
-                JSONObject imageLink =volumeInfo.getJSONObject("imageLinks");
-                String link=imageLink.getString("thumbnail");
+                if(volumeInfo.has("imagelinks")) {
+                    JSONObject imageLink = volumeInfo.getJSONObject("imageLinks");
+                    link = imageLink.getString("thumbnail");
+                }
 
                 BookItems bookitems=new BookItems(title,description,date,link);
                 books.add(bookitems);

@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
 
-    private static  class BookItemsAsyncTaskLoader extends AsyncTaskLoader<List<BookItems>> {
+    private class BookItemsAsyncTaskLoader extends AsyncTaskLoader<List<BookItems>> {
 
         private String mUrl;
 
