@@ -47,6 +47,7 @@ public class QueryUtils {
         }
         return url;
     }
+
     /**
      * Make an HTTP request to the given URL and return a String as the response.
      */
@@ -92,29 +93,30 @@ public class QueryUtils {
     }
 
 
-    private static  String readFromStream(InputStream inputStream) throws IOException{
-        StringBuilder output=new StringBuilder();
-        if(inputStream !=null){
-            InputStreamReader inputStreamReader=new InputStreamReader(inputStream,Charset.forName("UTF-8"));
-            BufferedReader reader=new BufferedReader(inputStreamReader);
-            String line= reader.readLine();
-            while(line !=null){
+    private static String readFromStream(InputStream inputStream) throws IOException {
+        StringBuilder output = new StringBuilder();
+        if (inputStream != null) {
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, Charset.forName("UTF-8"));
+            BufferedReader reader = new BufferedReader(inputStreamReader);
+            String line = reader.readLine();
+            while (line != null) {
                 output.append(line);
-                line=reader.readLine();
+                line = reader.readLine();
             }
         }
         return output.toString();
     }
 
-    public static ArrayList<BookItems> extractBookItems(String jsonResponse){
-        String title="";
-        String description ="";
-        String date="";
-        String link="";
+    public static ArrayList<BookItems> extractBookItems(String jsonResponse) {
+        String title = "";
+        String authors="";
+        String description = "";
+        String date = "";
+        String link = "";
 
 
         // Create an empty ArrayList that we can start adding earthquakes to
-        ArrayList<BookItems> books=new ArrayList<>();
+        ArrayList<BookItems> books = new ArrayList<>();
         // Try to parse the SAMPLE_JSON_RESPONSE. If there's a problem with the way the JSON
         // is formatted, a JSONException exception object will be thrown.
         // Catch the exception so the app doesn't crash, and print the error message to the logs.
@@ -122,25 +124,28 @@ public class QueryUtils {
             JSONObject baseJsonResponce = new JSONObject(jsonResponse);
             JSONArray bookArray = baseJsonResponce.getJSONArray("items");
 
-            for(int i=0;i<bookArray.length();i++){
+            for (int i = 0; i < bookArray.length(); i++) {
 
-                JSONObject currentBook=bookArray.getJSONObject(i);
+                JSONObject currentBook = bookArray.getJSONObject(i);
                 JSONObject volumeInfo = currentBook.getJSONObject("volumeInfo");
-                if(volumeInfo.has("title")){
-                    title=volumeInfo.getString("title");
+                if (volumeInfo.has("title")) {
+                    title = volumeInfo.getString("title");
                 }
-                if(volumeInfo.has("description")){
+                if(volumeInfo.has("authors")){
+                    authors=volumeInfo.getString("authors");
+                }
+                if (volumeInfo.has("description")) {
                     description = volumeInfo.getString("description");
                 }
-                if(volumeInfo.has("publishedDate"))
-                 date=volumeInfo.getString("publishedDate");
+                if (volumeInfo.has("publishedDate"))
+                    date = volumeInfo.getString("publishedDate");
 
-                if(volumeInfo.has("imageLinks")) {
+                if (volumeInfo.has("imageLinks")) {
                     JSONObject imageLink = volumeInfo.getJSONObject("imageLinks");
                     link = imageLink.getString("thumbnail");
                 }
 
-                BookItems bookitems=new BookItems(title,description,date,link);
+                BookItems bookitems = new BookItems(title,authors, description, date, link);
                 books.add(bookitems);
 
 
@@ -153,7 +158,8 @@ public class QueryUtils {
         }
         return books;
     }
-    public static List<BookItems> fetchBookList(String urlString)  {
+
+    public static List<BookItems> fetchBookList(String urlString) {
         URL url = createUrl(urlString);
         String jsonResponse = null;
         try {

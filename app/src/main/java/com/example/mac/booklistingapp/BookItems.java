@@ -6,14 +6,16 @@ package com.example.mac.booklistingapp;
 
 public class BookItems {
 
-    private  String title;
+    private String title;
+    private String author;
     private String description;
     private String date;
     private String link;
 
-    public BookItems(String title, String description, String date, String link) {
+    public BookItems(String title, String author,String description, String date, String link) {
         this.title = title;
         this.description = description;
+        this.author=author;
         this.date = date;
         this.link = link;
     }
@@ -44,5 +46,9 @@ public class BookItems {
 
     public String getLink() {
         return link;
+    }
+
+    public String getAuthor() {
+        return author;
     }
 }

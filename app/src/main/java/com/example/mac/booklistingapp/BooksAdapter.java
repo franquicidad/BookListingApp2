@@ -33,11 +33,12 @@ import java.util.List;
 public class BooksAdapter extends ArrayAdapter<BookItems> {
 
     private TextView title;
+    private TextView author;
     private TextView description;
     private TextView date;
 
     public BooksAdapter(Context context, List<BookItems> objects) {
-        super(context,0, objects);
+        super(context, 0, objects);
     }
 
 
@@ -50,25 +51,26 @@ public class BooksAdapter extends ArrayAdapter<BookItems> {
 
         BookItems bookItemPosition = getItem(position);
 
-        ImageView bookImage=(ImageView)v.findViewById(R.id.book_image);
+        ImageView bookImage = (ImageView) v.findViewById(R.id.book_image);
 
         title = (TextView) v.findViewById(R.id.title);
-        title.setText("Title:"+bookItemPosition.getTitle());
+        title.setText("Title:" + bookItemPosition.getTitle());
+
+        author=(TextView)v.findViewById(R.id.author);
+        author.setText("Author:"+bookItemPosition.getAuthor());
 
         description = (TextView) v.findViewById(R.id.description);
         description.setText(bookItemPosition.getDescription());
 
         date = (TextView) v.findViewById(R.id.published_date);
-        date.setText("Release Date:"+bookItemPosition.getDate());
+        date.setText("Release Date:" + bookItemPosition.getDate());
 
 
-
-
-        if(!TextUtils.isEmpty(bookItemPosition.getLink())){
+        if (!TextUtils.isEmpty(bookItemPosition.getLink())) {
             Picasso.with(getContext()).load(bookItemPosition.getLink()).into(bookImage);
         }
 
-       // new DownloadImagesTask(bookImage).execute(bookItemPosition.getLink());
+        // new DownloadImagesTask(bookImage).execute(bookItemPosition.getLink());
 
 
         return v;
@@ -109,4 +111,4 @@ public class BooksAdapter extends ArrayAdapter<BookItems> {
 //            }
 //            return bm;
 //        }
-    }
+}

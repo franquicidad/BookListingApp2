@@ -15,16 +15,17 @@ public class BookItemsAsyncTaskLoader extends AsyncTaskLoader<List<BookItems>> {
 
     public BookItemsAsyncTaskLoader(Context context, String url) {
         super(context);
-        this.mUrl=url;
+        this.mUrl = url;
     }
+
     @Override
     public List<BookItems> loadInBackground() {
         if (mUrl == null) {
             return null;
         }
-        List<BookItems> bookItems=null;
+        List<BookItems> bookItems = null;
         // Perform the network request, parse the response, and extract a list of earthquakes.
-        bookItems=QueryUtils.fetchBookList(mUrl);
+        bookItems = QueryUtils.fetchBookList(mUrl);
         return bookItems;
     }
 

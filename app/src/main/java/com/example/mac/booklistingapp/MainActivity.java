@@ -1,8 +1,6 @@
 package com.example.mac.booklistingapp;
 
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.app.LoaderManager;
@@ -25,29 +23,20 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<BookItems>> {
 
-    private BooksAdapter adapter;
-
     public static final String LOG_TAG = MainActivity.class.getName();
-
     private static final String JSON_URL =
             "https://www.googleapis.com/books/v1/volumes?maxResults=40&q=";
-
     /**
      * Constant value for the earthquake loader ID. We can choose any integer.
      * This really only comes into play if you're using multiple loaders.
      */
     private static final int EARTHQUAKE_LOADER_ID = 1;
-
+    private BooksAdapter adapter;
     private ListView listBooks;
     private EditText editText;
     private Button search;
 
     private TextView mEmptyStateTextView;
-
-    private NetworkInfo networkInfo;
-
-    private ConnectivityManager cm;
-
 
 
     @Override
@@ -62,26 +51,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
         listBooks.setEmptyView(mEmptyStateTextView);
 
-
         adapter = new BooksAdapter(getBaseContext(), new ArrayList<BookItems>());
-
-        //Get details on the currently active default data network
-        networkInfo = cm.getActiveNetworkInfo();
-
-        // If there is a network connection, fetch data
-        if (networkInfo != null && networkInfo.isConnected()) {
-            LoaderManager loaderManager = getSupportLoaderManager();
-            loaderManager.initLoader(EARTHQUAKE_LOADER_ID, null, MainActivity.this);
-        } else {
-            mEmptyStateTextView.setText(R.string.no_internet);
-        }
 
         LoaderManager loaderManager = getSupportLoaderManager();
         loaderManager.initLoader(EARTHQUAKE_LOADER_ID, null, MainActivity.this);
 
         listBooks.setAdapter(adapter);
-
-
 
         //Missing new AsyncTask
 
